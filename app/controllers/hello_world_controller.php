@@ -1,5 +1,6 @@
 <?php
 
+  // require 'app/models/drink.php';
   class HelloWorldController extends BaseController{
 
     public static function index(){
@@ -10,7 +11,12 @@
 
     public static function sandbox(){
       // Testaa koodiasi täällä
-      View::make('helloworld.html');
+      //$viski = new Drink(array('id' => 0));
+    //   $viskicola = Drink::find(1);
+    //   $drinks = Drink::all();
+    // // Kint-luokan dump-metodi tulostaa muuttujan arvon
+    //   Kint::dump($drinks);
+    //   Kint::dump($viskicola);
     }
 
     public static function esittelysivu(){
