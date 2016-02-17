@@ -7,6 +7,7 @@ class Drink extends BaseModel{
   // Konstruktori
   public function __construct($attributes){
     parent::__construct($attributes);
+    $this->validators = array('validate_name', 'validate_published', 'validate_publisher', 'validate_description');
   }
 
 
@@ -46,7 +47,6 @@ class Drink extends BaseModel{
         'id' => $row['id'],
         'player_id' => $row['player_id'],
         'name' => $row['name'],
-        'played' => $row['played'],
         'description' => $row['description'],
         'published' => $row['published'],
         'publisher' => $row['publisher'],
@@ -68,6 +68,42 @@ class Drink extends BaseModel{
     // Asetetaan lisätyn rivin id-sarakkeen arvo oliomme id-attribuutin arvoksi
     $this->id = $row['id'];
   }
+
+  public function update(){
+    $query = DB::connection()->prepare('UPDATE Drink SET name = :name, published = :published, publisher = :publisher , description = :description RETURNING id');
+
+    $query->execute(array('name' => $this->name, 'published' => $this->published, 'publisher' => $this->publisher, 'description' => $this->description));
+    // Haetaan kyselyn tuottama rivi, joka sisältää lisätyn rivin id-sarakkeen arvon
+    $row = $query->fetch();
+    // Asetetaan lisätyn rivin id-sarakkeen arvo oliomme id-attribuutin arvoksi
+    // Kint::dump($row);
+    $this->id = $row['id'];
+  }
+
+  public function destroy(){
+
+  }
+
+  public function validate_name(){
+
+  $this->validate_string_length($this->name, strlen($this->name));
+}
+
+  public function validate_description(){
+
+  $this->validate_string_length($this->description, strlen($this->description));
+}
+
+  public function validate_published(){
+
+  $this->validate_string_length($this->published, strlen($this->published));
+}
+
+  public function validate_publisher(){
+
+  $this->validate_string_length($this->publisher, strlen($this->publisher));
+}
+
 }
 
 

@@ -5,7 +5,7 @@
   // });
 
   $routes->get('/hiekkalaatikko', function() {
-    HelloWorldController::sandbox();
+    DrinkController::sandbox();
   });
 
   // $routes->get('/esittelysivu', function() {
@@ -48,7 +48,19 @@ $routes->post('/drink', function(){
   DrinkController::show($id);
 });
 
+$routes->get('/drink/:id/edit', function($id){
+  // Pelin muokkauslomakkeen esittäminen
+  DrinkController::edit($id);
+});
+$routes->post('/drink/:id/edit', function($id){
+  // Pelin muokkaaminen
+  DrinkController::update($id);
+});
 
+$routes->post('/drink/:id/destroy', function($id){
+  // Pelin poisto
+  DrinkController::destroy($id);
+});
 
 
 
