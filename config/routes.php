@@ -62,6 +62,15 @@ $routes->post('/drink/:id/destroy', function($id){
   DrinkController::destroy($id);
 });
 
+$routes->get('/login', function(){
+  // Kirjautumislomakkeen esittäminen
+  UserController::login();
+});
+$routes->post('/login', function(){
+  // Kirjautumisen käsittely
+  UserController::handle_login();
+});
+
 
 
 

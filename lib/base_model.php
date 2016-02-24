@@ -22,9 +22,10 @@
       foreach($this->validators as $validator){
         // Kutsu validointimetodia tässä ja lisää sen palauttamat virheet errors-taulukkoon
         $this->{$validator}();
-        $errors = array_merge($errors, $validator_errors);
+        
       }
 
+      $errors = array_merge($errors, $validator_errors);
       return $errors;
     }
 

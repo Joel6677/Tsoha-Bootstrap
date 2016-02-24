@@ -81,8 +81,29 @@ class Drink extends BaseModel{
   }
 
   public function destroy(){
+    $query = DB::connection()->prepare('DELETE FROM Drink RETURNING id');
 
+    $query->execute(array('name' => $this->name, 'published' => $this->published, 'publisher' => $this->publisher, 'description' => $this->description));
+    // Haetaan kyselyn tuottama rivi, joka sisältää lisätyn rivin id-sarakkeen arvon
+    $row = $query->fetch();
+    // Asetetaan lisätyn rivin id-sarakkeen arvo oliomme id-attribuutin arvoksi
+    // Kint::dump($row);
+    $this->id = $row['id'];
   }
+
+  public function authenticate(){
+    $query = DB::connection()->prepare('SELECT * FROM Player WHERE name = :name AND password = :password LIMIT 1');
+    $query->execute(array('name' => $name, 'password' => $password));
+    $row = $query->fetch();
+    if($row){
+      $kayttaja = new User();
+      return $kayttaja;
+  // Käyttäjä löytyi, palautetaan löytynyt käyttäjä oliona
+    }else{
+      return null;
+  // Käyttäjää ei löytynyt, palautetaan null
+    }
+}
 
   public function validate_name(){
 
