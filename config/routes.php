@@ -4,9 +4,7 @@
   //  HelloWorldController::index();
   // });
 
-  $routes->get('/hiekkalaatikko', function() {
-    DrinkController::sandbox();
-  });
+  
 
   // $routes->get('/esittelysivu', function() {
   //   HelloWorldController::esittelysivu();
@@ -22,6 +20,10 @@
 
   $routes->get('/kirjautuminen', function() {
     HelloWorldController::kirjautuminen();
+  });
+
+  $routes->get('/hiekkalaatikko', function() {
+    DrinkController::sandbox();
   });
 
    $routes->get('/', function() {

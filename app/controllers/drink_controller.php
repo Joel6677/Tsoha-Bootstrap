@@ -17,21 +17,26 @@ class DrinkController extends BaseController {
 
     $params = $_POST;
     // Alustetaan uusi drink-luokan olion käyttäjän syöttämillä arvoilla
-    $drink = new Drink(array(
+    $attributes = array(
       'name' => $params['name'],
       'description' => $params['description'],
       'publisher' => $params['publisher'],
       'published' => $params['published']
-    ));
+    );
 
-   // Kint::dump($params);
-    // Kutsutaan alustamamme olion save metodia, joka tallentaa olion tietokantaan
+    $drink = new Drink($attributes);
+    $errors = $drink->errors();
+
+    if(count($errors) == 0){
+    // Peli on validi, hyvä homma!
     $drink->save();
 
-
-
-    // Ohjataan käyttäjä lisäyksen jälkeen pelin esittelysivulle
-     Redirect::to('/drink/' . $drink->id, array('message' => 'drinkki on lisätty kirjastoosi!'));
+    Redirect::to('/drink/' . $drink->id, array('message' => 'Peli on lisätty kirjastoosi!'));
+    }else{
+    // Pelissä oli jotain vikaa :(
+    View::make('drink/new.html', array('errors' => $errors, 'attributes' => $attributes));
+    }
+   // Kint::dump($params);
   }
 
   public static function create() {

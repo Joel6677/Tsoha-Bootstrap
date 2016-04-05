@@ -18,14 +18,22 @@
     public function errors(){
       // Lisätään $errors muuttujaan kaikki virheilmoitukset taulukkona
       $errors = array();
+      $validator_errors = array();
+
 
       foreach($this->validators as $validator){
         // Kutsu validointimetodia tässä ja lisää sen palauttamat virheet errors-taulukkoon
-        $this->{$validator}();
+
+        $validator_errors[] = $this->{$validator}();
+        
+
         
       }
 
+      Kint::dump($this->validators);
+
       $errors = array_merge($errors, $validator_errors);
+      
       return $errors;
     }
 
@@ -33,12 +41,31 @@
       $errors = array();
       if($string == '' || $string == null){
       $errors[] = $string + ' ei saa olla tyhjä!';
+      Kint::dump($string);
+      Kint::dump($length);
   }
-      if(($length) < 3){
+      if(($length) < 2){
       $errors[] = $string + ' pituuden tulee olla vähintään kolme merkkiä!';
-  }
+  
 
       return $errors;
     }
-
   }
+
+
+    public function validate_is_numeric($date) {
+    $errors = array();
+    if(!is_numeric($date)){
+      $errors[] = $date + 'ei ole numeerinen!';
+    }
+      return $errors;
+    }
+
+    public function validate_is_string($string) {
+    $errors = array();
+    if(!preg_match("/^[a-zA-Z ]*$/", $string)){
+      $errors[] = $string + 'vain kirjaimia';
+    }
+      return $errors;
+    }
+}

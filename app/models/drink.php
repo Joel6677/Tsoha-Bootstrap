@@ -108,21 +108,27 @@ class Drink extends BaseModel{
   public function validate_name(){
 
   $this->validate_string_length($this->name, strlen($this->name));
+  $this->validate_is_string($this->name);
+  $errors = $this->validate_string_length($this->name, strlen($this->name));
+
+  Kint::dump($errors);
 }
 
   public function validate_description(){
 
   $this->validate_string_length($this->description, strlen($this->description));
+  $this->validate_is_string($this->description);
 }
 
   public function validate_published(){
 
-  $this->validate_string_length($this->published, strlen($this->published));
+  $this->validate_is_numeric($this->published);
 }
 
   public function validate_publisher(){
 
   $this->validate_string_length($this->publisher, strlen($this->publisher));
+  $this->validate_is_string($this->publisher);
 }
 
 }
