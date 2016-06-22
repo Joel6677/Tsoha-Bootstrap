@@ -18,26 +18,27 @@ class DrinkController extends BaseController {
     $params = $_POST;
     // Alustetaan uusi drink-luokan olion käyttäjän syöttämillä arvoilla
     $attributes = array(
-      'name' => $params['name'],
-      'description' => $params['description'],
+      'name' => $params['name'],  
       'publisher' => $params['publisher'],
-      'published' => $params['published']
+      'published' => $params['published'],
+      'description' => $params['description'],
     );
 
     $drink = new Drink($attributes);
     $errors = $drink->errors();
+    // Kint::dump($errors);
+
 
     if(count($errors) == 0){
     // Peli on validi, hyvä homma!
     $drink->save();
 
-    Redirect::to('/drink/' . $drink->id, array('message' => 'Peli on lisätty kirjastoosi!'));
+    Redirect::to('/drink/' . $drink->id, array('message' => 'Drinkki on lisätty kirjastoosi!'));
     }else{
     // Pelissä oli jotain vikaa :(
     View::make('drink/new.html', array('errors' => $errors, 'attributes' => $attributes));
     }
-   // Kint::dump($params);
-  }
+     }
 
   public static function create() {
     View::make('drink/new.html');
@@ -55,9 +56,8 @@ class DrinkController extends BaseController {
   // Pelin muokkaaminen (lomakkeen käsittely)
   public static function update($id){
     $params = $_POST;
-
     $attributes = array(
-      'id' => $id,
+      'id' => $params['id'],
       'name' => $params['name'],
       'publisher' => $params['publisher'],
       'published' => $params['published'],
@@ -66,38 +66,46 @@ class DrinkController extends BaseController {
 
     // Alustetaan drink-olio käyttäjän syöttämillä tiedoilla
     $drink = new Drink($attributes);
-    // $errors = $drink->errors();
+    $errors = $drink->errors();
+
+    
 
     // if(count($errors) > 0){
-      // View::make('drink/edit.html', array('errors' => $errors, 'attributes' => $attributes));
+    //   View::make('drink/edit.html', array('errors' => $errors, 'attributes' => $attributes));
     // }else{
       // Kutsutaan alustetun olion update-metodia, joka päivittää pelin tiedot tietokannassa
       $drink->update();
 
-      Redirect::to('/drink/' . $drink->id, array('message' => 'Peliä on muokattu onnistuneesti!'));
-    }
-  
+      Redirect::to('/drink' . $drink->id, array('message' => 'Drinkkiä on muokattu onnistuneesti!'));
+    // }
+  }
 
   // Pelin poistaminen
   public static function destroy($id){
     // Alustetaan drink-olio annetulla id:llä
     $drink = new Drink(array('id' => $id));
     // Kutsutaan drink-malliluokan metodia destroy, joka poistaa pelin sen id:llä
-    $drink->destroy();
+    $drink->destroy($id);
+    
 
     // Ohjataan käyttäjä pelien listaussivulle ilmoituksen kera
-    Redirect::to('/drink', array('message' => 'Peli on poistettu onnistuneesti!'));
+    Redirect::to('/drink', array('message' => 'Drinkki on poistettu onnistuneesti!'));
   }
 
   public static function sandbox(){
+    // post hommeli tähän
   $doom = new Drink(array(
-    'name' => 'd',
-    'published' => 'eilen',
+    'id' => '4',
+    'name' => 'testi',
+    'published' => '3.3.2010',
     'publisher' => 'id Software',
     'description' => 'Boom, boom!'
   ));
-  $errors = $doom->errors();
 
-  Kint::dump($errors);
+  $update = $doom->update(4);
+  $destroy = $doom->destroy(6);
+
+  // Kint::dump($destroy);
 }
 }
+

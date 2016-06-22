@@ -3,11 +3,11 @@
 
 class Drink extends BaseModel{
 
-  public $id, $user_id, $name, $grade, $description, $published, $publisher, $added;
+  public $id, $player_id, $name, $description, $published, $publisher, $added;
   // Konstruktori
   public function __construct($attributes){
     parent::__construct($attributes);
-    $this->validators = array('validate_name', 'validate_published', 'validate_publisher', 'validate_description');
+    $this->validators = array('validate_name', 'validate_publisher', 'validate_published', 'validate_description');
   }
 
 
@@ -31,7 +31,6 @@ class Drink extends BaseModel{
         'description' => $row['description'],
         'published' => $row['published'],
         'publisher' => $row['publisher'],
-        'added' => $row['added']
       ));
     }
 
@@ -45,12 +44,10 @@ class Drink extends BaseModel{
     if($row){
       $drink = new Drink(array(
         'id' => $row['id'],
-        'player_id' => $row['player_id'],
         'name' => $row['name'],
         'description' => $row['description'],
         'published' => $row['published'],
         'publisher' => $row['publisher'],
-        'added' => $row['added']
       ));
 
       return $drink;
@@ -62,33 +59,31 @@ class Drink extends BaseModel{
     // Lisätään RETURNING id tietokantakyselymme loppuun, niin saamme lisätyn rivin id-sarakkeen arvon
     $query = DB::connection()->prepare('INSERT INTO Drink (name, published, publisher, description) VALUES (:name, :published, :publisher, :description) RETURNING id');
     // Muistathan, että olion attribuuttiin pääse syntaksilla $this->attribuutin_nimi
-    $query->execute(array('name' => $this->name, 'published' => $this->published, 'publisher' => $this->publisher, 'description' => $this->description));
+    $query->execute(array('name' => $this->name, 'publisher' => $this->publisher, 'published' => $this->published, 'description' => $this->description));
     // Haetaan kyselyn tuottama rivi, joka sisältää lisätyn rivin id-sarakkeen arvon
     $row = $query->fetch();
     // Asetetaan lisätyn rivin id-sarakkeen arvo oliomme id-attribuutin arvoksi
     $this->id = $row['id'];
   }
 
-  public function update(){
-    $query = DB::connection()->prepare('UPDATE Drink SET name = :name, published = :published, publisher = :publisher , description = :description RETURNING id');
+  public function update($id){
+
+    // $numero = $this->id;
+
+    // Kint::dump($numero);
+
+    $query = DB::connection()->prepare("UPDATE DRINK SET name = :name, published = :published, publisher = :publisher , description = :description WHERE id = '{$id}'");
 
     $query->execute(array('name' => $this->name, 'published' => $this->published, 'publisher' => $this->publisher, 'description' => $this->description));
     // Haetaan kyselyn tuottama rivi, joka sisältää lisätyn rivin id-sarakkeen arvon
-    $row = $query->fetch();
-    // Asetetaan lisätyn rivin id-sarakkeen arvo oliomme id-attribuutin arvoksi
-    // Kint::dump($row);
-    $this->id = $row['id'];
+
   }
 
-  public function destroy(){
-    $query = DB::connection()->prepare('DELETE FROM Drink RETURNING id');
+  public function destroy($id){
+    $query = DB::connection()->prepare("DELETE FROM drink WHERE id = '{$id}'");
 
-    $query->execute(array('name' => $this->name, 'published' => $this->published, 'publisher' => $this->publisher, 'description' => $this->description));
-    // Haetaan kyselyn tuottama rivi, joka sisältää lisätyn rivin id-sarakkeen arvon
-    $row = $query->fetch();
-    // Asetetaan lisätyn rivin id-sarakkeen arvo oliomme id-attribuutin arvoksi
-    // Kint::dump($row);
-    $this->id = $row['id'];
+    $query->execute();
+
   }
 
   public function authenticate(){
@@ -107,28 +102,37 @@ class Drink extends BaseModel{
 
   public function validate_name(){
 
-  $this->validate_string_length($this->name, strlen($this->name));
-  $this->validate_is_string($this->name);
+  // $this->validate_string_length($this->name, strlen($this->name));
+  // $errors = $this->validate_is_string($this->name);
+    //merge
   $errors = $this->validate_string_length($this->name, strlen($this->name));
-
-  Kint::dump($errors);
+  
+  return $errors;
+  // Kint::dump($errors);
 }
 
   public function validate_description(){
 
-  $this->validate_string_length($this->description, strlen($this->description));
-  $this->validate_is_string($this->description);
+  // $this->validate_string_length($this->description, strlen($this->description));
+  // $errors = $this->validate_is_string($this->description);
+  $errors = $this->validate_string_length($this->description, strlen($this->description));
+  
+  return $errors;
 }
 
   public function validate_published(){
 
-  $this->validate_is_numeric($this->published);
+  $errors = $this->validate_is_numeric($this->published);
+  
+  return $errors;
 }
 
   public function validate_publisher(){
 
-  $this->validate_string_length($this->publisher, strlen($this->publisher));
-  $this->validate_is_string($this->publisher);
+  // $this->validate_string_length($this->publisher, strlen($this->publisher));
+  $errors = $this->validate_is_string($this->publisher);
+  
+  return $errors;
 }
 
 }

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1>Käyttäjän Henri drinkkikirjasto</h1>
+  <h1>Drinkkikirjasto</h1>
 
   <p>
     <a href="{{base_path}}/drink/new" class="btn btn-success">Lisää drinkki</a>
@@ -9,11 +9,10 @@
   <table class="table table-striped table-bordered">
     <thead>
       <tr>
+        <th>Id</th>
         <th>Nimi</th>
-        <th>Julkaisupäivä</th>
+        <th>Vuosi</th>
         <th>Julkaisija</th>
-        <th>Status</th>
-        <th>Lisäyspäivä</th>
         <th></th>
       </tr>
     </thead>
@@ -21,18 +20,12 @@
     <tbody>
       {% for drink in drinks %}
         <tr>
+          <td>{{drink.id}}</td>
           <td><a href="{{base_path}}/drink/{{drink.id}}">{{drink.name}}</td>
-          <td>{{drink.published}}</td>
+          <td>{{Drink.published}}</td>
           <td>{{drink.publisher}}</td>
-          <td>
-              {% if drink.played %}
-                <label class="label label-success">pelattu
-              {% else %}
-                <label class="label label-danger">kesken
-              {% endif %}
-          </td>
-          <td>{{drink.added}}</td>
           <td><a class="btn btn-default btn-sm" href="{{base_path}}/drink/{{drink.id}}/edit">Muokkaa</a></td>
+          <td><a class="btn btn-default btn-sm" href="{{base_path}}/drink/{{drink.id}}/destroy">Poista</a></td>
         </tr>
       {% endfor %}
     </tbody>

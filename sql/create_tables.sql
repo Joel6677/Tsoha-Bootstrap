@@ -11,6 +11,6 @@ CREATE TABLE Drink(
   description varchar(400),
   published DATE,
   publisher varchar(50),
-  added DATE
+
 );-- Lisää CREATE TABLE lauseet tähän tiedostoon
 

@@ -1,18 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
 {% import "macros/forms.html" as forms %}
-  <h1>{{drink.name}}</h1>
+  <h1>Drinkin tiedot</h1>
   <!-- Painikkeet tähän -->
   <p>
-    {{forms.destroy_button("#{base_path}/drink/#{drink.id}/destroy")}}
+    {{forms.destroy_button("#{base_path}/projekti/drink/{{drink.id}}/destroy")}}
    <a href="{{base_path}}/drink/{{drink.id}}/edit" class="btn btn-default">Muokkaa</a>
   </p>
   <!-- Tiedot tulee listana tähän -->
   <ul>
-    <li><strong>Ainekset:</strong> {{drink.published}}</li>
-   
-    {{id.description}}
-  
+    <li><strong>Tiedot:</strong> {{drink.published}}</li>
+      
 
   </ul>
     

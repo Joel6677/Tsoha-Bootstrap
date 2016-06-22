@@ -1,5 +1,4 @@
 <?php
-
   class BaseModel{
     // "protected"-attribuutti on käytössä vain luokan ja sen perivien luokkien sisällä
     protected $validators;
@@ -20,43 +19,49 @@
       $errors = array();
       $validator_errors = array();
 
+      //  kutsu metodeja ja lisää niiden tulokset taulukkoon
+
 
       foreach($this->validators as $validator){
         // Kutsu validointimetodia tässä ja lisää sen palauttamat virheet errors-taulukkoon
 
+        if($this->{$validator}() == 0)
         $validator_errors[] = $this->{$validator}();
-        
 
+        Kint::dump($validator_errors);
         
+       
+
       }
 
-      Kint::dump($this->validators);
-
       $errors = array_merge($errors, $validator_errors);
-      
+
+      Kint::dump($errors);
+
+  
       return $errors;
     }
 
     public function validate_string_length($string, $length) {
       $errors = array();
       if($string == '' || $string == null){
-      $errors[] = $string + ' ei saa olla tyhjä!';
-      Kint::dump($string);
-      Kint::dump($length);
+      $errors[] = $string . " ei saa olla tyhjä!";
+      // Kint::dump($string);
+      // Kint::dump($length);
   }
-      if(($length) < 2){
-      $errors[] = $string + ' pituuden tulee olla vähintään kolme merkkiä!';
-  
 
+      if($length < 2){
+      $errors[] = $string . " pituuden tulee olla vähintään kolme merkkiä!";
+      }
+      
       return $errors;
-    }
   }
 
 
-    public function validate_is_numeric($date) {
+    public function validate_is_numeric($string) {
     $errors = array();
-    if(!is_numeric($date)){
-      $errors[] = $date + 'ei ole numeerinen!';
+    if(!is_numeric($string)){
+      $errors[] = $string . " ei ole numeerinen!";
     }
       return $errors;
     }
@@ -64,7 +69,7 @@
     public function validate_is_string($string) {
     $errors = array();
     if(!preg_match("/^[a-zA-Z ]*$/", $string)){
-      $errors[] = $string + 'vain kirjaimia';
+      $errors[] = $string . " vain kirjaimia";
     }
       return $errors;
     }
