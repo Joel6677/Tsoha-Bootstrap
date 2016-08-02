@@ -91,7 +91,11 @@ class Drink extends BaseModel{
     $query->execute(array('name' => $name, 'password' => $password));
     $row = $query->fetch();
     if($row){
-      $kayttaja = new User();
+      $kayttaja = new User(array(
+        'id' => $row['id'],
+        'name' => $row['name'],
+        'password' => $row['password'],
+      ));
       return $kayttaja;
   // Käyttäjä löytyi, palautetaan löytynyt käyttäjä oliona
     }else{
