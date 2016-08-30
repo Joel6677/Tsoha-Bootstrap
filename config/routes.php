@@ -6,9 +6,9 @@
 
   
 
-  // $routes->get('/esittelysivu', function() {
-  //   HelloWorldController::esittelysivu();
-  // });
+  $routes->get('/esittelysivu', function() {
+    HelloWorldController::esittelysivu();
+  });
 
   $routes->get('/listaussivu', function() {
     HelloWorldController::listaussivu();
@@ -42,7 +42,7 @@ $routes->post('/drink', function(){
   DrinkController::create();
 });
 
-    $routes->get('/drink/esittelysivu', function(){
+  $routes->get('/drink/esittelysivu', function(){
   DrinkController::esittelysivu();
 });
 
@@ -54,10 +54,18 @@ $routes->get('/drink/:id/edit', function($id){
   // Pelin muokkauslomakkeen esittäminen
   DrinkController::edit($id);
 });
-$routes->post('/drink/:id/edit', function($id){
+
+$routes->post('/drink/:id/edit', function($id){ // tässä vika
   // Pelin muokkaaminen
+
   DrinkController::update($id);
 });
+
+$routes->get('/drink/:id/tiedot', function($id){
+  // Pelin muokkauslomakkeen esittäminen
+  DrinkController::tiedot($id);
+});
+
 
 $routes->post('/drink/:id/destroy', function($id){
   // Pelin poisto

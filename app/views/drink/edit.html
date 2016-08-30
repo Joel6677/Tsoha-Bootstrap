@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
+
+
   <h1>Muokkaa juomaa</h1>
 
-  <form method="post" action="{{base_path}}/drink/:id/edit">
-
+{% for drink in attributes %}
+  <form method="post" action="{{base_path}}/drink/{{drink.id}}/edit">
+{% endfor %}
     <div class="form-group">
       <label>Nimi</label>
       <input type="text" name="name" class="form-control">

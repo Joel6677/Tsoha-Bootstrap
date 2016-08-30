@@ -42,7 +42,7 @@ class Drink extends BaseModel{
     $row = $query->fetch();
 
     if($row){
-      $drink = new Drink(array(
+      $drink[] = new Drink(array(
         'id' => $row['id'],
         'name' => $row['name'],
         'description' => $row['description'],
@@ -66,23 +66,21 @@ class Drink extends BaseModel{
     $this->id = $row['id'];
   }
 
-  public function update($id){
+  public function update(){
 
-    // $numero = $this->id;
 
-    // Kint::dump($numero);
+    $query = DB::connection()->prepare("UPDATE DRINK SET name = :name, published = :published, publisher = :publisher , description = :description WHERE id = :id");
 
-    $query = DB::connection()->prepare("UPDATE DRINK SET name = :name, published = :published, publisher = :publisher , description = :description WHERE id = '{$id}'");
-
-    $query->execute(array('name' => $this->name, 'published' => $this->published, 'publisher' => $this->publisher, 'description' => $this->description));
+    $query->execute(array('id' => $this->id, 'name' => $this->name, 'published' => $this->published, 'publisher' => $this->publisher, 'description' => $this->description));
     // Haetaan kyselyn tuottama rivi, joka sisältää lisätyn rivin id-sarakkeen arvon
+    $row = $query->fetch();
 
   }
 
   public function destroy($id){
-    $query = DB::connection()->prepare("DELETE FROM drink WHERE id = '{$id}'");
+    $query = DB::connection()->prepare("DELETE FROM drink WHERE id = :id");
 
-    $query->execute();
+    $query->execute(array('id' => $this->id));
 
   }
 

@@ -1,21 +1,39 @@
 {% extends "base.html" %}
 {% block content %}
 {% import "macros/forms.html" as forms %}
-  <h1>Drinkin tiedot</h1>
+  
+
+  <h1>Juoman tiedot</h1>
+
+  {% for drink in drinks %}
+  <form method="post" action="{{base_path}}/drink/{{drink.id}}/destroy">
+  
+
   <!-- Painikkeet tähän -->
-  <p>
+  <!-- <p>
     {{forms.destroy_button("#{base_path}/projekti/drink/{{drink.id}}/destroy")}}
    <a href="{{base_path}}/drink/{{drink.id}}/edit" class="btn btn-default">Muokkaa</a>
   </p>
   <!-- Tiedot tulee listana tähän -->
-  <ul>
-    <li><strong>Tiedot:</strong> {{drink.published}}</li>
-      
+ <!--  <ul> --> 
+
+    
+    
+    <li><strong>Nimi:</strong> {{drink.name}}</li>
+    <li><strong>Julkaistu:</strong> {{drink.published}}</li>
+   
 
   </ul>
+  
+
+{% endfor %}
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">Poista</button>
+    </div>
     
+  </form>
+{% endblock %}
   
   
     
  
-{% endblock %}

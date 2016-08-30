@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
+  {% if user_logged_in %}
+    <h1>Käyttäjän {{user_logged_in.name}} Drinkkikirjasto</h1>
+  {% endif %}
+<div class="alert alert-success">
+  {{message}}
+</div>
+
   <h1>Drinkkikirjasto</h1>
 
   <p>
@@ -21,11 +28,10 @@
       {% for drink in drinks %}
         <tr>
           <td>{{drink.id}}</td>
-          <td><a href="{{base_path}}/drink/{{drink.id}}">{{drink.name}}</td>
+          <td><a href="{{base_path}}/drink/{{drink.id}}/tiedot">{{drink.name}}</td>
           <td>{{Drink.published}}</td>
           <td>{{drink.publisher}}</td>
           <td><a class="btn btn-default btn-sm" href="{{base_path}}/drink/{{drink.id}}/edit">Muokkaa</a></td>
-          <td><a class="btn btn-default btn-sm" href="{{base_path}}/drink/{{drink.id}}/destroy">Poista</a></td>
         </tr>
       {% endfor %}
     </tbody>
