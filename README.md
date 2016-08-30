@@ -24,4 +24,8 @@ https://github.com/Joel6677/Tsoha-Bootstrap/blob/master/doc/Dokumentaatio.pdf
 
 http://advancedkittenry.github.io/suunnittelu_ja_tyoymparisto/aiheet/Drinkkiarkisto.html
 
+## Käyttäjätunnus ja salasana
+Username: Kalle
+Password: Kalle123
+
 
