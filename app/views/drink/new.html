@@ -12,7 +12,20 @@
     </div>
   {% endif %}
 
+
+
   <form method="post" action="{{base_path}}/drink">
+
+  <div class="form-group">
+    <label>Kategoria</label>
+    <select class="form-control" name="category">
+    {% for category in categories %}
+      <option value="{{category.id}}">{{category.name}}</option>
+    {% endfor %}
+    </select>
+  </div>
+
+
     <div class="form-group">
       <label class="control-label">Nimi</label>
       <input type="text" name="name" class="form-control" value="{{attributes.name}}">
@@ -24,7 +37,7 @@
     </div>
 
     <div class="form-group">
-      <label class="control-label">Vuosi</label>
+      <label class="control-label">Aika</label>
       <input type="date" name="published" class="form-control" value="{{attributes.published}}">
     </div>
 

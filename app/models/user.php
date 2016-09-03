@@ -10,6 +10,7 @@ class User extends BaseModel{
     $row = $query->fetch();
     if($row){
       $kayttaja = new User(array(
+        'id' => $row['id'],
         'name' => $row['name'],
         'password' => $row['password'],
       ));
@@ -21,4 +22,22 @@ class User extends BaseModel{
     }
 }
 
+public static function find($id){
+    $query = DB::connection()->prepare('SELECT * FROM Player WHERE id = :id LIMIT 1');
+    $query->execute(array('id' => $id));
+    $row = $query->fetch();
+
+    if($row){
+      $player = new User(array(
+        'id' => $row['id'],
+        'name' => $row['name'],
+        'password' => $row['password'],
+      ));
+
+      return $player;
+    }
+
+    return null;
+
+}
 }

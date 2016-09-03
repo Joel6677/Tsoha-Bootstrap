@@ -3,18 +3,17 @@
 
 class Drink extends BaseModel{
 
-  public $id, $player_id, $name, $description, $published, $publisher, $added;
+  public $id, $player_id, $category_id, $name, $description, $published, $publisher, $added;
   // Konstruktori
   public function __construct($attributes){
     parent::__construct($attributes);
     $this->validators = array('validate_name', 'validate_publisher', 'validate_published', 'validate_description');
   }
 
-
   public static function all(){
 
     // Alustetaan kysely tietokantayhteydellämme
-    $query = DB::connection()->prepare('SELECT * FROM Drink');
+    $query = DB::connection()->prepare('SELECT Drink.id, Drink.player_id, Drink.name, Drink.published, Drink.description, Drink.publisher, Category.name AS category_name FROM Drink LEFT JOIN Category On Drink.category_id = Category.id');
     // Suoritetaan kysely
     $query->execute();
     // Haetaan kyselyn tuottamat rivit
@@ -28,6 +27,7 @@ class Drink extends BaseModel{
         'id' => $row['id'],
         'player_id' => $row['player_id'],
         'name' => $row['name'],
+        'category_id' => $row['category_name'],
         'description' => $row['description'],
         'published' => $row['published'],
         'publisher' => $row['publisher'],
@@ -57,9 +57,9 @@ class Drink extends BaseModel{
   }
   public function save(){
     // Lisätään RETURNING id tietokantakyselymme loppuun, niin saamme lisätyn rivin id-sarakkeen arvon
-    $query = DB::connection()->prepare('INSERT INTO Drink (name, published, publisher, description) VALUES (:name, :published, :publisher, :description) RETURNING id');
+    $query = DB::connection()->prepare('INSERT INTO Drink (name, published, publisher, description, category_id) VALUES (:name, :published, :publisher, :description, :category_id) RETURNING id');
     // Muistathan, että olion attribuuttiin pääse syntaksilla $this->attribuutin_nimi
-    $query->execute(array('name' => $this->name, 'publisher' => $this->publisher, 'published' => $this->published, 'description' => $this->description));
+    $query->execute(array('name' => $this->name, 'publisher' => $this->publisher, 'published' => $this->published, 'description' => $this->description, 'category_id' => $this->category_id));
     // Haetaan kyselyn tuottama rivi, joka sisältää lisätyn rivin id-sarakkeen arvon
     $row = $query->fetch();
     // Asetetaan lisätyn rivin id-sarakkeen arvo oliomme id-attribuutin arvoksi

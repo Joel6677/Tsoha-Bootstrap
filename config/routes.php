@@ -42,9 +42,6 @@ $routes->post('/drink', function(){
   DrinkController::create();
 });
 
-  $routes->get('/drink/esittelysivu', function(){
-  DrinkController::esittelysivu();
-});
 
   $routes->get('/drink/:id', function($id){
   DrinkController::show($id);
@@ -79,6 +76,10 @@ $routes->get('/login', function(){
 $routes->post('/login', function(){
   // Kirjautumisen käsittely
   UserController::handle_login();
+});
+
+$routes->post('/logout', function(){
+  UserController::logout();
 });
 
 

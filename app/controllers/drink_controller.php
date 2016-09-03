@@ -3,30 +3,33 @@
 // require 'app/models/drink.php'
 class DrinkController extends BaseController {
 	public static function index(){
+    self::check_logged_in();
     // Haetaan kaikki pelit tietokannasta
-    $drinks = Drink::all();
+    $drinks = Drink::all(); // tähän molemmat taulut
     // Renderöidään views/drink kansiossa sijaitseva tiedosto index.html muuttujan $drinks datalla
     View::make('drink/index.html', array('drinks' => $drinks));
   }
 
-     public static function esittelysivu(){
-      View::make('drink/esittelysivu.html');
-  }
+
   public static function store(){
     // POST-pyynnön muuttujat sijaitsevat $_POST nimisessä assosiaatiolistassa
 
     $params = $_POST;
+
+    $category = $params['category'];
     // Alustetaan uusi drink-luokan olion käyttäjän syöttämillä arvoilla
     $attributes = array(
       'name' => $params['name'],  
       'publisher' => $params['publisher'],
       'published' => $params['published'],
+      'category_id' => $category,
       'description' => $params['description'],
     );
 
     $drink = new Drink($attributes);
     $errors = $drink->errors();
-    // Kint::dump($errors);
+    $categories = Category::all();
+        // Kint::dump($errors);
 
 
     if(count($errors) == 0){
@@ -35,15 +38,18 @@ class DrinkController extends BaseController {
     Redirect::to('/drink/' . $drink->id, array('message' => 'Drinkki on lisätty kirjastoosi!'));
     }else{
     // Pelissä oli jotain vikaa :(
-    View::make('drink/new.html', array('errors' => $errors, 'attributes' => $attributes));
+    View::make('drink/new.html', array('errors' => $errors, 'attributes' => $attributes, 'categories' => $categories));
     }
-     }
+  }
 
   public static function create() {
-    View::make('drink/new.html');
+    $categories = Category::all();
+
+    View::make('drink/new.html', array('categories' => $categories));
   }
 
   public static function show($id) {
+    self::check_logged_in();
     View::make('drink/show.html');
   }
 
@@ -53,7 +59,8 @@ class DrinkController extends BaseController {
   }
 
   public static function edit($id){
-    $drink = Drink::find($id); // pistä toimimaan
+    self::check_logged_in();
+    $drink = Drink::find($id); 
     
 
     View::make('drink/edit.html', array('attributes' => $drink));
@@ -63,7 +70,7 @@ class DrinkController extends BaseController {
   public static function update($id){
     $params = $_POST;
     $attributes = array(
-      'id' => $id, //parametri ei toimi
+      'id' => $id, 
       'name' => $params['name'],
       'publisher' => $params['publisher'],
       'published' => $params['published'],
@@ -103,14 +110,10 @@ class DrinkController extends BaseController {
 
   public static function sandbox(){
     // post hommeli tähän
-  $kayttaja = new Player(array(
-        'player_id' => $row['player_id'],
-        'name' => $row['name'],
-        'password' => $row['password'],
-      ));
-    $test = User::authenticate();
+
+    $test = Drink::all();
     Kint::trace();
-    Kint::dump($kayttaja);
+    Kint::dump($test);
 
 }
 }
