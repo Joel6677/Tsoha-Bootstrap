@@ -69,9 +69,9 @@ class Drink extends BaseModel{
   public function update(){
 
 
-    $query = DB::connection()->prepare("UPDATE DRINK SET name = :name, published = :published, publisher = :publisher , description = :description WHERE id = :id");
+    $query = DB::connection()->prepare("UPDATE DRINK SET name = :name, published = :published, publisher = :publisher , description = :description, category_id = :category_id WHERE id = :id");
 
-    $query->execute(array('id' => $this->id, 'name' => $this->name, 'published' => $this->published, 'publisher' => $this->publisher, 'description' => $this->description));
+    $query->execute(array('id' => $this->id, 'name' => $this->name, 'published' => $this->published, 'category_id' =>$this->category_id, 'publisher' => $this->publisher, 'description' => $this->description));
     // Haetaan kyselyn tuottama rivi, joka sisältää lisätyn rivin id-sarakkeen arvon
     $row = $query->fetch();
 
@@ -108,7 +108,7 @@ class Drink extends BaseModel{
   // $errors = $this->validate_is_string($this->name);
     //merge
   $errors = $this->validate_string_length($this->name, strlen($this->name));
-  
+
   return $errors;
   // Kint::dump($errors);
 }
@@ -136,6 +136,7 @@ class Drink extends BaseModel{
   
   return $errors;
 }
+
 
 }
 

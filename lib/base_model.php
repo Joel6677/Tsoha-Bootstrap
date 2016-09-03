@@ -25,18 +25,14 @@
       foreach($this->validators as $validator){
         // Kutsu validointimetodia tässä ja lisää sen palauttamat virheet errors-taulukkoon
 
-        if($this->{$validator}() == 0)
+        // if($this->{$validator}() == 0)
         $validator_errors[] = $this->{$validator}();
-
-        Kint::dump($validator_errors);
         
        
 
       }
 
       $errors = array_merge($errors, $validator_errors);
-
-      Kint::dump($errors);
 
   
       return $errors;

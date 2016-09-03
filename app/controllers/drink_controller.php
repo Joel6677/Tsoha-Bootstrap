@@ -60,20 +60,23 @@ class DrinkController extends BaseController {
 
   public static function edit($id){
     self::check_logged_in();
-    $drink = Drink::find($id); 
+    $drink = Drink::find($id);
+    $category = Category::all(); 
     
 
-    View::make('drink/edit.html', array('attributes' => $drink));
+    View::make('drink/edit.html', array('attributes' => $drink, 'categories' => $category));
   }
 
   // Pelin muokkaaminen (lomakkeen käsittely)
   public static function update($id){
     $params = $_POST;
+    $category = $params['category'];
     $attributes = array(
       'id' => $id, 
       'name' => $params['name'],
       'publisher' => $params['publisher'],
       'published' => $params['published'],
+      'category_id' => $category,
       'description' => $params['description']
     );
 
@@ -81,11 +84,12 @@ class DrinkController extends BaseController {
     // Alustetaan drink-olio käyttäjän syöttämillä tiedoilla
     $drink = new Drink($attributes);
     $errors = $drink->errors();
+    $categories = Category::all();
 
     
 
     if(count($errors) > 0){
-      View::make('drink/edit.html', array('errors' => $errors, 'attributes' => $attributes));
+      View::make('drink/edit.html', array('errors' => $errors, 'attributes' => $attributes, 'categories' => $categories));
     }else{
       // Kutsutaan alustetun olion update-metodia, joka päivittää pelin tiedot tietokannassa
      
@@ -108,13 +112,18 @@ class DrinkController extends BaseController {
     Redirect::to('/drink', array('message' => 'Drinkki on poistettu onnistuneesti!'));
   }
 
-  public static function sandbox(){
-    // post hommeli tähän
+public static function sandbox(){
+  $doom = new Drink(array(
+    'id' => '5',
+    'name' => 'd',
+    'published' => 'eilen',
+    'publisher' => 'id Software',
+    'description' => 'Boom, boom!'
+  ));
+  $errors = $doom->errors();
 
-    $test = Drink::all();
-    Kint::trace();
-    Kint::dump($test);
-
+  Kint::trace();
+  Kint::dump($errors);
 }
 }
 
