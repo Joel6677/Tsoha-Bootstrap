@@ -37,7 +37,7 @@ class Drink extends BaseModel{
     return $drinks;
   }
  public static function find($id){
-    $query = DB::connection()->prepare('SELECT * FROM Drink WHERE id = :id LIMIT 1');
+    $query = DB::connection()->prepare('SELECT Drink.id, Drink.player_id, Drink.name, Drink.published, Drink.description, Drink.publisher, Category.name AS category_name FROM Drink LEFT JOIN Category On Drink.category_id = Category.id WHERE Drink.id = :id LIMIT 1');
     $query->execute(array('id' => $id));
     $row = $query->fetch();
 
@@ -46,6 +46,7 @@ class Drink extends BaseModel{
         'id' => $row['id'],
         'name' => $row['name'],
         'description' => $row['description'],
+        'category_id' => $row['category_name'],
         'published' => $row['published'],
         'publisher' => $row['publisher'],
       ));
@@ -68,7 +69,7 @@ class Drink extends BaseModel{
 
   public function update(){
 
-
+    
     $query = DB::connection()->prepare("UPDATE DRINK SET name = :name, published = :published, publisher = :publisher , description = :description, category_id = :category_id WHERE id = :id");
 
     $query->execute(array('id' => $this->id, 'name' => $this->name, 'published' => $this->published, 'category_id' =>$this->category_id, 'publisher' => $this->publisher, 'description' => $this->description));
@@ -117,7 +118,7 @@ class Drink extends BaseModel{
 
   // $this->validate_string_length($this->description, strlen($this->description));
   // $errors = $this->validate_is_string($this->description);
-  $errors = $this->validate_string_length($this->description, strlen($this->description));
+  $errors = $this->validate_is_string($this->description);
   
   return $errors;
 }
@@ -132,7 +133,8 @@ class Drink extends BaseModel{
   public function validate_publisher(){
 
   // $this->validate_string_length($this->publisher, strlen($this->publisher));
-  $errors = $this->validate_is_string($this->publisher);
+  $errors = $this->validate_string_length($this->publisher, strlen($this->publisher));
+
   
   return $errors;
 }

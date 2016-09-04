@@ -29,7 +29,7 @@ class DrinkController extends BaseController {
     $drink = new Drink($attributes);
     $errors = $drink->errors();
     $categories = Category::all();
-        // Kint::dump($errors);
+        Kint::dump($errors);
 
 
     if(count($errors) == 0){
@@ -89,7 +89,7 @@ class DrinkController extends BaseController {
     
 
     if(count($errors) > 0){
-      View::make('drink/edit.html', array('errors' => $errors, 'attributes' => $attributes, 'categories' => $categories));
+      View::make('drink/edit.html', array('errors' => $errors, 'attributes' => $drink, 'categories' => $categories));
     }else{
       // Kutsutaan alustetun olion update-metodia, joka päivittää pelin tiedot tietokannassa
      
@@ -113,17 +113,24 @@ class DrinkController extends BaseController {
   }
 
 public static function sandbox(){
-  $doom = new Drink(array(
-    'id' => '5',
-    'name' => 'd',
-    'published' => 'eilen',
-    'publisher' => 'id Software',
-    'description' => 'Boom, boom!'
-  ));
-  $errors = $doom->errors();
 
-  Kint::trace();
-  Kint::dump($errors);
+     $drink = Drink::find(6);
+     Kint::dump($drink);
+  // $attributes = array(
+  //   'name' => 'daaa',
+  //   'published' => 'eilen',
+  //   'publisher' => 'a',
+  //   'category_id' => '1',
+  //   'description' => 'Boom, boom!'
+  //   );
+
+  //   $drink = new Drink($attributes);
+  //   $er = $drink->errors();
+  //   Kint::dump($er);
+  //   $categories = Category::all();
+   
+  //   View::make('drink/new.html', array('errors' => $er, 'attributes' => $attributes, 'categories' => $categories));
+    
 }
 }
 

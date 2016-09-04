@@ -24,8 +24,8 @@
 
       foreach($this->validators as $validator){
         // Kutsu validointimetodia tässä ja lisää sen palauttamat virheet errors-taulukkoon
-
-        // if($this->{$validator}() == 0)
+        
+        if(strlen($this->{$validator}()) > 1)
         $validator_errors[] = $this->{$validator}();
         
        
@@ -34,38 +34,38 @@
 
       $errors = array_merge($errors, $validator_errors);
 
+
   
       return $errors;
     }
 
     public function validate_string_length($string, $length) {
-      $errors = array();
+      $errors = '';
       if($string == '' || $string == null){
-      $errors[] = $string . " ei saa olla tyhjä!";
-      // Kint::dump($string);
+      $errors = $string . " ei saa olla tyhjä!";
       // Kint::dump($length);
   }
 
       if($length < 2){
-      $errors[] = $string . " pituuden tulee olla vähintään kolme merkkiä!";
-      }
+      $errors = $string . " pituuden tulee olla vähintään kolme merkkiä!";
+     }
       
       return $errors;
   }
 
 
     public function validate_is_numeric($string) {
-    $errors = array();
-    if(!is_numeric($string)){
-      $errors[] = $string . " ei ole numeerinen!";
+    $errors = '';
+    if(!is_string($string)){
+      $errors = $string . " ei ole numeerinen!";
     }
       return $errors;
     }
 
     public function validate_is_string($string) {
-    $errors = array();
+    $errors = '';
     if(!preg_match("/^[a-zA-Z ]*$/", $string)){
-      $errors[] = $string . " vain kirjaimia";
+      $errors = $string . " vain kirjaimia";
     }
       return $errors;
     }

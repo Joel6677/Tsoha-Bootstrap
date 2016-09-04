@@ -4,9 +4,21 @@
 
   <h1>Muokkaa juomaa</h1>
 
+   {% if errors %}
+    <div class="alert alert-danger">
+      <ul>
+        {% for error in errors %}
+          <li>{{error}}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
 {% for drink in attributes %}
   <form method="post" action="{{base_path}}/drink/{{drink.id}}/edit">
 {% endfor %}
+
+
 
 <div class="form-group">
     <label>Kategoria</label>
